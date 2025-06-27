@@ -1,0 +1,24 @@
+{
+  "name": "gym-backend",
+  "version": "1.0.0",
+  "description": "apy for web page gym utmach fit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "antho",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.0",
+    "dotenv": "^16.6.0",
+    "express": "^5.1.0",
+    "fs": "^0.0.1-security",
+    "pg": "^8.16.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
