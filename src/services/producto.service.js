@@ -1,4 +1,5 @@
-const model = require("../models/producto.models");
+const model = require('../models/producto.models');
+const db = require('../config/db');
 
 exports.getAllProductos = async () => {
   return await model.findALL();
