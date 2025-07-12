@@ -1,12 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/producto.controller');
+const { authenticateToken, requireAdmin, requireTrainer } = require('../middleware/auth');
 
+// Rutas públicas
 router.get('/', controller.getAllProductos);
 router.get('/:id', controller.getProductoById);
-router.post('/', controller.createProducto);
-router.put('/:id', controller.updateProducto);
-router.delete('/:id', controller.deleteProducto);
 
+// Rutas protegidas - SOLO ADMIN
+router.post('/', authenticateToken, requireAdmin, controller.createProducto);
+router.put('/:id', authenticateToken, requireAdmin, controller.updateProducto);
+router.delete('/:id', authenticateToken, requireAdmin, controller.deleteProducto);
 
 module.exports = router;
