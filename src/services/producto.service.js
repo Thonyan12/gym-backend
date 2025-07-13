@@ -15,7 +15,7 @@ exports.createProducto = async (producto) => {
   const { nombre_prod, tipo_prod, precio_prod, stock } = producto;
   const result = await db.query(
     `INSERT INTO producto (nombre_prod, tipo_prod, precio_prod, stock)
-     VALUES ($1, $2, $3, $4)
+    VALUES ($1, $2, $3, $4)
      RETURNING *`,
     [nombre_prod, tipo_prod, precio_prod, stock]
   );
