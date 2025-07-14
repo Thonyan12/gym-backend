@@ -1,72 +1,42 @@
-const service = require('../services/miembro.service');
+const db = require('../config/db');
 
-exports.getAllMiembros = async (req, res) => {
-    try {
-    const miembros = await service.getAllMiembros();
-    res.json(miembros);
-    } catch (error) {
-    res.status(500).json({
-    message: "Error al obtener los miembros",
-    error: error.message,
-    });
-}
+exports.findALL = async () => {
+  const result = await db.query("SELECT * FROM miembro");
+  return result.rows;
 };
 
-exports.createMiembro = async (req, res) => {
-try {
-    const miembro = await service.createMiembro(req.body);
-    res.status(201).json(miembro);
-} catch (error) {
-    res.status(500).json({
-    message: "Error al crear el miembro",
-    error: error.message,
-    });
-}
+exports.find = async (id) => {
+  const result = await db.query(
+    "SELECT * FROM miembro WHERE id_miembro = $1",
+    [id]
+  );
+  return result.rows[0];
 };
 
-exports.getMiembroById = async (req, res) => {
-try {
-    const miembro = await service.getMiembroById(req.params.id);
-
-    if (!miembro) {
-    return res.status(404).json({
-        message: `Miembro con id ${req.params.id} no encontrado`,
-    });
-    }
-    res.json(miembro);
-} catch (error) {
-    res.status(500).json({
-    message: "Error al obtener el miembro",
-    error: error.message,
-    });
-}
+exports.create = async (miembro) => {
+  const { nombre, apellido, edad, telefono, fecha_registro, estado } = miembro;
+  const result = await db.query(
+    `INSERT INTO miembro (nombre, apellido, edad, telefono, fecha_registro, estado)
+     VALUES ($1, $2, $3, $4, $5, $6)
+     RETURNING *`,
+    [nombre, apellido, edad, telefono, fecha_registro, estado]
+  );
+  return result.rows[0];
 };
 
-exports.updateMiembro = async (req, res) => {
-try {
-    const miembro = await service.updateMiembro(req.params.id, req.body);
-    if (!miembro) {
-            return res.status(404).json({
-                message: "Miembro no encontrado",
-            });
-        }
-        res.json(miembro);
-    } catch (error) {
-        res.status(500).json({
-            message: "Error al actualizar el miembro",
-            error: error.message,
-        });
-    }
+exports.update = async (id, miembro) => {
+  const { nombre, apellido, edad, telefono, fecha_registro, estado } = miembro;
+  const result = await db.query(
+    `UPDATE miembro 
+     SET nombre = $1, apellido = $2, edad = $3, telefono = $4, fecha_registro = $5, estado = $6
+     WHERE id_miembro = $7
+     RETURNING *`,
+    [nombre, apellido, edad, telefono, fecha_registro, estado, id]
+  );
+  return result.rows[0];
 };
 
-exports.deleteMiembro = async (req, res) => {
-    try {
-        const result = await service.deleteMiembro(req.params.id);
-        res.json(result);
-    } catch (error) {
-        res.status(500).json({
-            message: "Error al eliminar el miembro",
-            error: error.message,
-        });
-    }
+exports.remove = async (id) => {
+  await db.query("DELETE FROM miembro WHERE id_miembro = $1", [id]);
+  return { message: "Miembro eliminado" };
 };

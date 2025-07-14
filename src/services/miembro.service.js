@@ -22,5 +22,5 @@ exports.updateMiembro = async (id, miembro) => {
 };
 
 exports.deleteMiembro = async (id) => {
-    return { message: "Producto eliminado" };
+    return await model.remove(Number(id));
 };
