@@ -13,17 +13,16 @@ exports.getAllMiembros = async (req, res) => {
 };
 
 exports.createMiembro = async (req, res) => {
-try {
-    const miembro = await service.createMiembro(req.body);
-    res.status(201).json(miembro);
-} catch (error) {
-    res.status(500).json({
-    message: "Error al crear el miembro",
-    error: error.message,
-    });
-}
+    try {
+        const miembro = await service.createMiembro(req.body);
+        res.status(201).json(miembro);
+    } catch (error) {
+        res.status(500).json({
+            message: "Error al crear el miembro",
+            error: error.message,
+        });
+    }
 };
-
 exports.getMiembroById = async (req, res) => {
 try {
     const miembro = await service.getMiembroById(req.params.id);

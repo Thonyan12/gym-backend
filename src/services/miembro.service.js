@@ -1,5 +1,4 @@
 const model = require('../models/miembro.models');
-const db = require('../config/db');
 
 exports.getAllMiembros = async () => {
     return await model.findALL();
