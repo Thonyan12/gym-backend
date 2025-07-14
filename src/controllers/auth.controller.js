@@ -78,9 +78,9 @@ function getDashboardRoute(rol) {
     case 'admin':
       return '/admin/dashboard';
     case 'entrenador':
-      return '/trainer/dashboard';
+      return '/admin/dashboard';
     case 'miembro':
-      return '/member/dashboard';
+      return '/miembros/dashboard';
     default:
       return '/login';
   }
