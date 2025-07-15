@@ -5,7 +5,7 @@ const authService = require("../services/auth.service");
 exports.login = async (req, res) => {
   try {
     const { usuario, contrasenia } = req.body;
-    
+
     // Buscar usuario (puede ser username o email)
     const user = await authService.findUserByCredentials(usuario, usuario);
     if (!user) {
@@ -22,12 +22,12 @@ exports.login = async (req, res) => {
 
     // Crear token JWT para TODOS
     const token = jwt.sign(
-      { 
-        id: user.id_usuario, 
+      {
+        id: user.id_usuario,
         usuario: user.usuario,
         rol: user.rol,
         id_miembro: user.id_miembro,
-        id_coach: user.id_coach
+        id_coach: user.id_coach,
       },
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
@@ -41,9 +41,9 @@ exports.login = async (req, res) => {
         usuario: user.usuario,
         rol: user.rol,
         nombre_completo: userDetails.nombre_completo,
-        email: userDetails.email
+        email: userDetails.email,
       },
-      redirectTo: getDashboardRoute(user.rol)
+      redirectTo: getDashboardRoute(user.rol),
     });
   } catch (error) {
     res.status(500).json({ message: "Error en login", error: error.message });
@@ -54,7 +54,7 @@ exports.login = async (req, res) => {
 exports.memberRegister = async (req, res) => {
   try {
     const memberData = req.body;
-    
+
     // Crear miembro Y usuario
     const result = await authService.createMemberWithUser(memberData);
 
@@ -64,36 +64,39 @@ exports.memberRegister = async (req, res) => {
         id: result.member.id_miembro,
         nombre: `${result.member.nombre} ${result.member.apellido1}`,
         email: result.member.correo,
-        usuario: result.user.usuario
+        usuario: result.user.usuario,
       },
-      instructions: "Ya puedes hacer login con tu email y contraseña"
+      instructions: "Ya puedes hacer login con tu email y contraseña",
     });
   } catch (error) {
-    res.status(500).json({ message: "Error al registrar", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error al registrar", error: error.message });
   }
 };
-
 function getDashboardRoute(rol) {
-  switch(rol) {
-    case 'admin':
-      return '/admin/dashboard';
-    case 'entrenador':
-      return '/admin/dashboard';
-    case 'miembro':
-      return '/miembros/dashboard';
+  switch (rol) {
+    case "admin":
+      return "/admin/dashboard"; // ✅ Administradores → área admin
+    case "entrenador":
+      return "/entrenadores/dashboard"; // ✅ Entrenadores → área entrenadores
+    case "miembro":
+      return "/miembros/dashboard"; // ✅ Miembros → área miembros
     default:
-      return '/login';
+      return "/login";
   }
 }
 
 exports.verifyToken = async (req, res) => {
   try {
     const userDetails = await authService.getUserWithDetails(req.user.id);
-    res.json({ 
-      message: "Token válido", 
-      user: userDetails 
+    res.json({
+      message: "Token válido",
+      user: userDetails,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error al verificar token", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error al verificar token", error: error.message });
   }
 };
