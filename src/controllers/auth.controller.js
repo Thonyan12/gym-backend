@@ -77,11 +77,11 @@ exports.memberRegister = async (req, res) => {
 function getDashboardRoute(rol) {
   switch (rol) {
     case "admin":
-      return "/admin/dashboard"; // ✅ Administradores → área admin
+      return "/admin/dashboard"; 
     case "entrenador":
-      return "/entrenadores/dashboard"; // ✅ Entrenadores → área entrenadores
+      return "/entrenadores/dashboard";
     case "miembro":
-      return "/miembros/dashboard"; // ✅ Miembros → área miembros
+      return "/miembros/dashboard"; 
     default:
       return "/login";
   }
