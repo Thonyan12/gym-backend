@@ -8,4 +8,8 @@ const pool = new Pool({
   database: process.env.PG_DATABASE,
 });
 
+pool.getClient = async () => {
+  return await pool.connect();
+};
+
 module.exports = pool;
