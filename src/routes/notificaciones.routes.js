@@ -1,14 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/notificaciones.controller');
-const { authenticateToken, requireAdmin } = require('../middleware/auth');
+const notificacionesController = require('../controllers/notificaciones.controller');
+const { authenticateToken } = require('../middleware/auth');
 
-// Rutas públicas
-router.get('/', controller.getAllNotificaciones);
-router.get('/:id', controller.getNotificacionById);
-
-// Rutas protegidas - SOLO ADMIN
-router.post('/', authenticateToken, requireAdmin, controller.createNotificacion);
-router.delete('/:id', authenticateToken, requireAdmin, controller.deleteNotificacion);
-
+// Ruta para obtener todas las notificaciones del usuario (enviadas y recibidas)
+router.get('/all', authenticateToken, notificacionesController.getAllUserNotifications);
+router.get('/:id', authenticateToken, notificacionesController.getNotificacionById); // Buscar por ID
+router.post('/', authenticateToken, notificacionesController.createNotificacion); // Crear nueva
+router.delete('/:id', authenticateToken, notificacionesController.deleteNotificacion); // Eliminar por ID
+router.get('/tipo/:tipo', authenticateToken, notificacionesController.getNotificacionesByTipo);
 module.exports = router;
