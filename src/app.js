@@ -9,6 +9,7 @@ const memberRoutes = require('./routes/member.routes');
 const usuariosRoutes = require('./routes/usuarios.routes');
 const mensualidadesAdminRoutes = require('./routes/mensualidadesAdmin.routes');
 const notificacionesRoutes = require('./routes/notificaciones.routes');
+const facturaAdminRoutes = require('./routes/facturaAdmin.routes');
 
 const app = express();
 app.use(cors());
@@ -21,5 +22,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/members', memberRoutes); 
 app.use('/api/mensualidades', mensualidadesAdminRoutes);
 app.use('/api/notificaciones', notificacionesRoutes);
+app.use('/api/facturas', facturaAdminRoutes);
 
 module.exports = app;
