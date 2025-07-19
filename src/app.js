@@ -4,7 +4,8 @@ require('dotenv').config();
 
 const productoRoutes = require('./routes/producto.routes');
 const authRoutes = require('./routes/auth.routes');
-const miembroRoutes = require('./routes/miembro.routes');
+const miembroRoutes  = require('./routes/miembro.routes');
+const carritoRoutes  = require('./routes/carrito.routes');
 const memberRoutes = require('./routes/member.routes'); 
 const usuariosRoutes = require('./routes/usuarios.routes');
 const mensualidadesAdminRoutes = require('./routes/mensualidadesAdmin.routes');
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/miembros', miembroRoutes);
+app.use('/api/miembros', carritoRoutes);
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/productos', productoRoutes);
 app.use('/api/auth', authRoutes);
