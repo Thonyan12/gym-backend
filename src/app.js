@@ -13,6 +13,7 @@ const notificacionesRoutes = require('./routes/notificaciones.routes');
 const facturaAdminRoutes = require('./routes/facturaAdmin.routes');
 const facturasMiembroRoutes = require('./routes/facturaMiembro.routes');
 const dietasMiembroRoutes = require('./routes/dietasMiembro.routes');
+const rutinaRoutes = require('./routes/rutina.routes');
 
 
 const app = express();
@@ -31,5 +32,6 @@ app.use('/api/notificaciones', notificacionesRoutes);
 app.use('/api/facturas', facturaAdminRoutes);
 app.use('/api/facturasMiembros', facturasMiembroRoutes);
 app.use('/api/dietas', dietasMiembroRoutes);
+app.use('/api/rutinas', rutinaRoutes);
 
 module.exports = app;
