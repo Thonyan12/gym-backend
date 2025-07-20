@@ -14,6 +14,7 @@ const facturaAdminRoutes = require('./routes/facturaAdmin.routes');
 const facturasMiembroRoutes = require('./routes/facturaMiembro.routes');
 const dietasMiembroRoutes = require('./routes/dietasMiembro.routes');
 const rutinaRoutes = require('./routes/rutina.routes');
+const perfilFisicoRoutes = require('./routes/perfilFisico.routes');
 
 
 const app = express();
@@ -33,5 +34,6 @@ app.use('/api/facturas', facturaAdminRoutes);
 app.use('/api/facturasMiembros', facturasMiembroRoutes);
 app.use('/api/dietas', dietasMiembroRoutes);
 app.use('/api/rutinas', rutinaRoutes);
+app.use('/api/perfil-fisico', perfilFisicoRoutes);
 
 module.exports = app;
