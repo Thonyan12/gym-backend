@@ -24,3 +24,15 @@ exports.findByFacturaId = async (id_factura) => {
   return result.rows;
 };
 
+
+// Crear un nuevo detalle de factura
+exports.create = async (detalle) => {
+  const { id_factura, tipo_detalle, referencia_id, descripcion, monto, iva, metodo_pago, estado_registro, f_registro } = detalle;
+  const result = await db.query(
+    `INSERT INTO detalle_factura (id_factura, tipo_detalle, referencia_id, descripcion, monto, iva, metodo_pago, estado_registro, f_registro)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+     RETURNING *`,
+    [id_factura, tipo_detalle, referencia_id, descripcion, monto, iva, metodo_pago, estado_registro, f_registro]
+  );
+  return result.rows[0];
+};

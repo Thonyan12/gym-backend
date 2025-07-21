@@ -11,6 +11,7 @@ router.get('/:id', controller.getDetalleFacturaById);
 // Ruta para obtener los detalles de factura por id_factura
 router.get('/factura/:id_factura', controller.getDetallesByFacturaId);
 
-
+//crear
+router.post('/', controller.createDetalleFactura);
 
 module.exports = router;

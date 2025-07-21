@@ -77,3 +77,19 @@ exports.deleteFactura = async (req, res) => {
     res.status(500).json({ message: 'Error al eliminar la factura.', error: error.message });
   }
 };
+
+exports.createFacturaConDetalle = async (req, res) => {
+  try {
+    const facturaCompleta = req.body;
+    console.log('Datos recibidos en el backend:', facturaCompleta); // Depuración
+
+    const resultado = await service.createFacturaConDetalle(facturaCompleta);
+    res.status(201).json(resultado);
+  } catch (error) {
+    console.error('Error al crear factura con detalles:', error);
+    res.status(500).json({
+      message: 'Error al crear factura con detalles',
+      error: error.message,
+    });
+  }
+};

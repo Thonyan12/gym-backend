@@ -23,3 +23,40 @@ exports.getDetallesByFacturaId = async (id_factura) => {
   return detalles;
 };
 
+
+// Crear un nuevo detalle de factura
+exports.createDetalleFactura = async (detalle) => {
+  try {
+    const nuevoDetalle = await model.create(detalle);
+    return nuevoDetalle;
+  } catch (error) {
+    console.error('Error al crear el detalle de factura:', error);
+    throw new Error('Error al crear el detalle de factura');
+  }
+};
+
+
+exports.createFacturaConDetalle = async (facturaCompleta) => {
+  const { factura, detalles } = facturaCompleta;
+
+  try {
+    // Crear la factura
+    const nuevaFactura = await facturaModel.create(factura);
+
+    // Crear los detalles de factura asociados
+    const detallesCreados = [];
+    for (const detalle of detalles) {
+      detalle.id_factura = nuevaFactura.id_factura; // Asignar el id_factura generado
+      const nuevoDetalle = await detalleModel.create(detalle);
+      detallesCreados.push(nuevoDetalle);
+    }
+
+    return {
+      factura: nuevaFactura,
+      detalles: detallesCreados,
+    };
+  } catch (error) {
+    console.error('Error al crear factura con detalles:', error);
+    throw new Error('Error al crear factura con detalles');
+  }
+};

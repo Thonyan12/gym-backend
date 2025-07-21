@@ -21,6 +21,9 @@ const perfilFisicoRoutes = require('./routes/perfilFisico.routes');
 const notificacionesMiembroRoutes = require('./routes/notificacionesMiembros.routes');
 
 
+
+
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -41,6 +44,8 @@ app.use('/api/dietas', dietasMiembroRoutes);
 app.use('/api/rutinas', rutinaRoutes);
 app.use('/api/perfil-fisico', perfilFisicoRoutes);
 app.use('/api/notificaciones-miembro', notificacionesMiembroRoutes);
+
+
 
 
 module.exports = app;

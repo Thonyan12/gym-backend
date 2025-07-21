@@ -51,3 +51,29 @@ exports.getDetallesByFacturaId = async (req, res) => {
   }
 };
 
+// Crear un nuevo detalle de factura
+exports.createDetalleFactura = async (req, res) => {
+  try {
+    const nuevoDetalle = await service.createDetalleFactura(req.body);
+    res.status(201).json(nuevoDetalle);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al crear el detalle de factura",
+      error: error.message,
+    });
+  }
+};
+
+exports.createFacturaConDetalle = async (req, res) => {
+  try {
+    const facturaCompleta = req.body; // Recibir factura y detalles desde el cliente
+    const resultado = await service.createFacturaConDetalle(facturaCompleta);
+    res.status(201).json(resultado);
+  } catch (error) {
+    res.status(500).json({
+      message: "Error al crear factura con detalles",
+      error: error.message,
+    });
+  }
+};
+

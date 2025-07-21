@@ -41,3 +41,6 @@ exports.remove = async (id) => {
   await db.query("DELETE FROM factura WHERE id_factura = $1", [id]);
   return { message: "Factura eliminada" };
 };
+
+
+
