@@ -11,12 +11,19 @@ const usuariosRoutes = require('./routes/usuarios.routes');
 const mensualidadesAdminRoutes = require('./routes/mensualidadesAdmin.routes');
 const notificacionesRoutes = require('./routes/notificaciones.routes');
 const facturaAdminRoutes = require('./routes/facturaAdmin.routes');
+const detallefacturaRoutes = require('./routes/detallefactura.routes');
+
+
 const facturasMiembroRoutes = require('./routes/facturaMiembro.routes');
 const dietasMiembroRoutes = require('./routes/dietasMiembro.routes');
 const rutinaRoutes = require('./routes/rutina.routes');
 const perfilFisicoRoutes = require('./routes/perfilFisico.routes');
+
 const asistenciaRoutes = require('./routes/asistencia.routes');
 const entrenadoresRoutes = require('./routes/entrenadores.routes');
+
+const notificacionesMiembroRoutes = require('./routes/notificacionesMiembros.routes');
+
 
 
 const app = express();
@@ -37,9 +44,12 @@ app.use('/api/members', memberRoutes);
 app.use('/api/mensualidades', mensualidadesAdminRoutes);
 app.use('/api/notificaciones', notificacionesRoutes);
 app.use('/api/facturas', facturaAdminRoutes);
+app.use('/api/detallefactura', detallefacturaRoutes);
 app.use('/api/facturasMiembros', facturasMiembroRoutes);
 app.use('/api/dietas', dietasMiembroRoutes);
 app.use('/api/rutinas', rutinaRoutes);
 app.use('/api/perfil-fisico', perfilFisicoRoutes);
+app.use('/api/notificaciones-miembro', notificacionesMiembroRoutes);
+
 
 module.exports = app;

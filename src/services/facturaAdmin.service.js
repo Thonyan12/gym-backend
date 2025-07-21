@@ -17,7 +17,14 @@ exports.getFacturaById = async (id) => {
 
 // Crear nueva factura
 exports.createFactura = async (factura) => {
-  return await model.create(factura);
+  const { id_miembro, id_admin, fecha_emision, total, estado_registro, f_registro } = factura;
+  const result = await db.query(
+    `INSERT INTO factura (id_miembro, id_admin, fecha_emision, total, estado_registro, f_registro)
+     VALUES ($1, $2, $3, $4, $5, $6)
+     RETURNING *`,
+    [id_miembro, id_admin, fecha_emision, total, estado_registro, f_registro]
+  );
+  return result.rows[0];
 };
 
 // Actualizar factura

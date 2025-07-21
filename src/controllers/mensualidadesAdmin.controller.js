@@ -15,8 +15,8 @@ exports.getAllMensualidades = async (req, res) => {
 
 exports.createMensualidad = async (req, res) => {
   try {
-    const mensualidad = await service.createMensualidad(req.body);
-    res.status(201).json(mensualidad);
+    const nuevaMensualidad = await service.createMensualidad(req.body);
+    res.status(201).json(nuevaMensualidad);
   } catch (error) {
     res.status(500).json({
       message: "Error al crear la mensualidad",
