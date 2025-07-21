@@ -24,7 +24,7 @@ exports.registrarAsistencia = async (req, res) => {
             error: error.message
         });
     }
-};
+}; 
 
 // GET /api/asistencia - Listar historial de asistencia (opcional: ?id_miembro=)
 exports.listarAsistencia = async (req, res) => {
