@@ -40,7 +40,29 @@ try {
     });
 }
 };
-
+exports.getMiembroByIdOrDetalle = async (req, res) => {
+    try {
+        const idMiembro = req.params.id;
+        const miembro = await service.getMiembroById(idMiembro); // O getDetalleMiembro según el caso
+        if (!miembro) {
+            return res.status(404).json({
+                success: false,
+                message: 'Miembro no encontrado'
+            });
+        }
+        res.json({
+            success: true,
+            data: miembro
+        });
+    } catch (error) {
+        console.error('Error al obtener miembro:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error interno al obtener miembro',
+            error: error.message
+        });
+    }
+};
 exports.updateMiembro = async (req, res) => {
 try {
     const miembro = await service.updateMiembro(req.params.id, req.body);
