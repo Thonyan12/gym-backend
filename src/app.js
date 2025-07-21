@@ -23,6 +23,7 @@ const asistenciaRoutes = require('./routes/asistencia.routes');
 const entrenadoresRoutes = require('./routes/entrenadores.routes');
 
 const notificacionesMiembroRoutes = require('./routes/notificacionesMiembros.routes');
+const notificacionesEntrenadorRoutes = require('./routes/notificacionesEntrenador.routes');
 
 
 
@@ -50,6 +51,7 @@ app.use('/api/dietas', dietasMiembroRoutes);
 app.use('/api/rutinas', rutinaRoutes);
 app.use('/api/perfil-fisico', perfilFisicoRoutes);
 app.use('/api/notificaciones-miembro', notificacionesMiembroRoutes);
+app.use('/api/notificaciones-entrenador', notificacionesEntrenadorRoutes);
 
 
 module.exports = app;
