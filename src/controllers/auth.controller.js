@@ -38,6 +38,8 @@ exports.login = async (req, res) => {
       token,
       user: {
         id: user.id_usuario,
+        id_miembro: user.id_miembro,
+        id_coach: user.id_coach,
         usuario: user.usuario,
         rol: user.rol,
         nombre_completo: userDetails.nombre_completo,
@@ -77,11 +79,11 @@ exports.memberRegister = async (req, res) => {
 function getDashboardRoute(rol) {
   switch (rol) {
     case "admin":
-      return "/admin/dashboard"; 
+      return "/admin/dashboard";
     case "entrenador":
       return "/entrenadores/dashboard";
     case "miembro":
-      return "/miembros/dashboard"; 
+      return "/miembros/dashboard";
     default:
       return "/login";
   }
