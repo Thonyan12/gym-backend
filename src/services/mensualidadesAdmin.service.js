@@ -17,17 +17,24 @@ exports.getMensualidadById = async (id) => {
   return mensualidad;
 };
 
-// Crear nueva mensualidad
+ // Crear nueva mensualidad y factura asociada
 exports.createMensualidad = async (mensualidad) => {
   const { id_miembro, fecha_inicio, fecha_fin, monto, estado_mensualidad, estado, f_registro } = mensualidad;
-  const result = await db.query(
+
+  // Crear la mensualidad
+  const mensualidadResult = await db.query(
     `INSERT INTO mensualidad (id_miembro, fecha_inicio, fecha_fin, monto, estado_mensualidad, estado, f_registro)
      VALUES ($1, $2, $3, $4, $5, $6, $7)
      RETURNING *`,
     [id_miembro, fecha_inicio, fecha_fin, monto, estado_mensualidad, estado, f_registro]
   );
-  return result.rows[0];
+
+  const nuevaMensualidad = mensualidadResult.rows[0];
+
+  // Retornar solo la mensualidad creada, ya que la factura será generada automáticamente por el trigger
+  return nuevaMensualidad;
 };
+
 
 // Actualizar mensualidad
 exports.updateMensualidad = async (id, mensualidad) => {

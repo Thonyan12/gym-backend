@@ -61,13 +61,19 @@ exports.updateFactura = async (req, res) => {
 };
 
 exports.deleteFactura = async (req, res) => {
+  const idFactura = req.params.id;
+
   try {
-    const result = await service.deleteFactura(req.params.id);
-    res.json(result);
+    // Eliminar la factura (los detalles se eliminan automáticamente por ON DELETE CASCADE)
+    const result = await db.query(`DELETE FROM factura WHERE id_factura = $1 RETURNING *`, [idFactura]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'Factura no encontrada.' });
+    }
+
+    res.status(200).json({ message: 'Factura eliminada correctamente.' });
   } catch (error) {
-    res.status(500).json({
-      message: "Error al eliminar la factura",
-      error: error.message,
-    });
+    console.error('Error al eliminar la factura:', error);
+    res.status(500).json({ message: 'Error al eliminar la factura.', error: error.message });
   }
 };
