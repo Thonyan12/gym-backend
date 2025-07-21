@@ -1,4 +1,4 @@
-const service = require('../services/rutina.service');
+const service = require("../services/rutina.service");
 
 // Obtener todas las rutinas
 exports.getAllRutinas = async (req, res) => {
@@ -6,14 +6,14 @@ exports.getAllRutinas = async (req, res) => {
     const rutinas = await service.getAllRutinas();
     res.json({
       success: true,
-      data: rutinas
+      data: rutinas,
     });
   } catch (error) {
-    console.error('Error al obtener rutinas:', error);
+    console.error("Error al obtener rutinas:", error);
     res.status(500).json({
       success: false,
       message: "Error al obtener las rutinas",
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -24,19 +24,19 @@ exports.getRutinaById = async (req, res) => {
     const rutina = await service.getRutinaById(req.params.id);
     res.json({
       success: true,
-      data: rutina
+      data: rutina,
     });
   } catch (error) {
-    if (error.message.includes('no encontrada')) {
+    if (error.message.includes("no encontrada")) {
       return res.status(404).json({
         success: false,
-        message: error.message
+        message: error.message,
       });
     }
     res.status(500).json({
       success: false,
       message: "Error al obtener la rutina",
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -48,13 +48,13 @@ exports.createRutina = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Rutina creada exitosamente",
-      data: rutina
+      data: rutina,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
       message: "Error al crear la rutina",
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -66,19 +66,19 @@ exports.updateRutina = async (req, res) => {
     res.json({
       success: true,
       message: "Rutina actualizada exitosamente",
-      data: rutina
+      data: rutina,
     });
   } catch (error) {
-    if (error.message.includes('no encontrada')) {
+    if (error.message.includes("no encontrada")) {
       return res.status(404).json({
         success: false,
-        message: error.message
+        message: error.message,
       });
     }
     res.status(500).json({
       success: false,
       message: "Error al actualizar la rutina",
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -89,13 +89,13 @@ exports.deleteRutina = async (req, res) => {
     const result = await service.deleteRutina(req.params.id);
     res.json({
       success: true,
-      message: result.message
+      message: result.message,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
       message: "Error al eliminar la rutina",
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -106,13 +106,13 @@ exports.getAllAsignaciones = async (req, res) => {
     const asignaciones = await service.getAllAsignaciones();
     res.json({
       success: true,
-      data: asignaciones
+      data: asignaciones,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
       message: "Error al obtener las asignaciones",
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -124,19 +124,19 @@ exports.asignarRutina = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Rutina asignada exitosamente",
-      data: asignacion
+      data: asignacion,
     });
   } catch (error) {
-    if (error.message.includes('ya tiene asignada')) {
+    if (error.message.includes("ya tiene asignada")) {
       return res.status(409).json({
         success: false,
-        message: error.message
+        message: error.message,
       });
     }
     res.status(500).json({
       success: false,
       message: "Error al asignar la rutina",
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -148,19 +148,19 @@ exports.updateAsignacion = async (req, res) => {
     res.json({
       success: true,
       message: "Asignación actualizada exitosamente",
-      data: asignacion
+      data: asignacion,
     });
   } catch (error) {
-    if (error.message.includes('no encontrada')) {
+    if (error.message.includes("no encontrada")) {
       return res.status(404).json({
         success: false,
-        message: error.message
+        message: error.message,
       });
     }
     res.status(500).json({
       success: false,
       message: "Error al actualizar la asignación",
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -171,42 +171,57 @@ exports.deleteAsignacion = async (req, res) => {
     const result = await service.deleteAsignacion(req.params.id);
     res.json({
       success: true,
-      message: result.message
+      message: result.message,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
       message: "Error al eliminar la asignación",
-      error: error.message
+      error: error.message,
     });
   }
 };
 
 // **ENDPOINT PRINCIPAL: Obtener rutinas de un miembro específico**
+
 exports.getRutinasByMiembro = async (req, res) => {
   try {
     const memberId = req.params.id_miembro;
     const rutinas = await service.getRutinasByMiembro(memberId);
-    
-    if (rutinas.length === 0) {
+
+    // Mapeo de campos para el frontend
+    const rutinasMapeadas = rutinas.map((r) => ({
+      id_asignacion: r.id_asignacion,
+      id_rutina: r.id_rutina,
+      tipo_rutina: r.tipo_rut,
+      nivel: r.nivel,
+      descripcion_rutina: r.descripcion_rut,
+      duracion_rutina: r.duracion_rut,
+      fecha_inicio: r.fecha_inicio,
+      estado_rutina: r.estado_asignacion,
+      descripcion_asignacion: r.descripcion_asignacion,
+      // agrega otros campos si tu frontend los necesita
+    }));
+
+    if (rutinasMapeadas.length === 0) {
       return res.json({
         success: true,
         message: "No tienes rutinas asignadas actualmente",
-        data: []
+        data: [],
       });
     }
-    
+
     res.json({
       success: true,
       message: "Rutinas del miembro obtenidas exitosamente",
-      data: rutinas
+      data: rutinasMapeadas,
     });
   } catch (error) {
-    console.error('Error al obtener rutinas del miembro:', error);
+    console.error("Error al obtener rutinas del miembro:", error);
     res.status(500).json({
       success: false,
       message: "Error al obtener las rutinas del miembro",
-      error: error.message
+      error: error.message,
     });
   }
 };
@@ -215,35 +230,48 @@ exports.getRutinasByMiembro = async (req, res) => {
 exports.getMyRutinas = async (req, res) => {
   try {
     const memberId = req.user.id_miembro;
-    
+
     if (!memberId) {
       return res.status(403).json({
         success: false,
-        message: "Solo los miembros pueden acceder a sus rutinas"
+        message: "Solo los miembros pueden acceder a sus rutinas",
       });
     }
 
     const rutinas = await service.getRutinasByMiembro(memberId);
-    
-    if (rutinas.length === 0) {
+
+    // Mapeo de campos para el frontend
+    const rutinasMapeadas = rutinas.map((r) => ({
+      id_asignacion: r.id_asignacion,
+      id_rutina: r.id_rutina,
+      tipo_rutina: r.tipo_rut,
+      nivel: r.nivel,
+      descripcion_rutina: r.descripcion_rut,
+      duracion_rutina: r.duracion_rut,
+      fecha_inicio: r.fecha_inicio,
+      estado_rutina: r.estado_asignacion,
+      descripcion_asignacion: r.descripcion_asignacion,
+    }));
+
+    if (rutinasMapeadas.length === 0) {
       return res.json({
         success: true,
         message: "No tienes rutinas asignadas actualmente",
-        data: []
+        data: [],
       });
     }
-    
+
     res.json({
       success: true,
       message: "Tus rutinas obtenidas exitosamente",
-      data: rutinas
+      data: rutinasMapeadas,
     });
   } catch (error) {
-    console.error('Error al obtener rutinas del miembro:', error);
+    console.error("Error al obtener rutinas del miembro:", error);
     res.status(500).json({
       success: false,
       message: "Error al obtener tus rutinas",
-      error: error.message
+      error: error.message,
     });
   }
 };
