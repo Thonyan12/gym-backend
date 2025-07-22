@@ -31,7 +31,7 @@ app.use('/api/notificaciones-miembro', notificacionesMiembroRoutes);
 app.use('/api/asistencia', asistenciaRoutes);
 app.use('/api/entrenadores', entrenadoresRoutes);
 app.use('/api/miembros', miembroRoutes);    
-app.use('/api/carrito', carritoRoutes); // Cambié el prefijo para evitar conflicto
+app.use('/api/miembros', carritoRoutes); 
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/productos', productoRoutes);
 app.use('/api/auth', authRoutes);

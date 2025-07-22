@@ -1,4 +1,5 @@
 const service = require("../services/notificaciones.services");
+const model = require('../models/notificaciones.models');
 
 exports.getAllNotificaciones = async (req, res) => {
   try {
@@ -124,5 +125,33 @@ exports.getNotificacionesByTipo = async (req, res) => {
       message: "Error al buscar notificaciones por tipo",
       error: error.message,
     });
+  }
+};
+
+exports.listarPorUsuario = async (req, res) => {
+  try {
+    const id_usuario = Number(req.user.id_miembro);
+    if (!id_usuario || isNaN(id_usuario)) {
+      return res.status(400).json({ success: false, message: 'ID de usuario inválido' });
+    }
+    const tipo = req.query.tipo || null;
+    const notificaciones = await service.getNotificacionesPorUsuario(id_usuario, tipo);
+    res.json({ success: true, data: notificaciones });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error al listar notificaciones', error: error.message });
+  }
+};
+
+exports.marcarLeida = async (req, res) => {
+  try {
+    const id_usuario =  Number(req.user.id_miembro);
+    const { id_notificacion } = req.params;
+    const notificacion = await service.marcarLeida(id_notificacion, id_usuario);
+    if (!notificacion) {
+      return res.status(404).json({ success: false, message: 'Notificación no encontrada' });
+    }
+    res.json({ success: true, message: 'Notificación marcada como leída', data: notificacion });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error al marcar como leída', error: error.message });
   }
 };

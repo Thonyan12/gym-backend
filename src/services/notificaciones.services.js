@@ -37,3 +37,13 @@ exports.getReceivedNotifications = async (userId) => {
 exports.getNotificacionesByTipo = async (tipo) => {
   return await model.findByTipo(tipo);
 };
+
+// Listar notificaciones por usuario y tipo
+exports.getNotificacionesPorUsuario = async (id_usuario, tipo = null) => {
+  return await model.findByUser(id_usuario, tipo);
+};
+
+// Marcar notificación como leída
+exports.marcarLeida = async (id_notificacion, id_usuario) => {
+  return await model.markAsRead(id_notificacion, id_usuario);
+};

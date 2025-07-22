@@ -2,7 +2,9 @@ const db = require("../config/db");
 
 // Obtener todas las notificaciones
 exports.findAll = async () => {
-  const result = await db.query("SELECT * FROM notificacion");
+  const result = await db.query(
+    "SELECT * FROM notificacion ORDER BY fecha_envio DESC, id_notificacion DESC"
+  );
   return result.rows;
 };
 
@@ -74,4 +76,30 @@ exports.findByTipo = async (tipo) => {
     [`%${tipo}%`]
   );
   return result.rows;
+};
+
+// Listar notificaciones por usuario y tipo (opcional)
+exports.findByUser = async (id_usuario, tipo = null) => {
+  let query = `
+    SELECT * FROM notificacion
+    WHERE id_usuario = $1 AND estado = TRUE
+  `;
+  const params = [id_usuario];
+
+  if (tipo !== null && tipo !== undefined && tipo !== "") {
+    query += " AND tipo = $2";
+    params.push(tipo);
+  }
+  query += " ORDER BY fecha_envio DESC, id_notificacion DESC";
+  const result = await db.query(query, params);
+  return result.rows;
+};
+
+// Marcar notificación como leída
+exports.markAsRead = async (id_notificacion, id_usuario) => {
+  const result = await db.query(
+    `UPDATE Notificacion SET leido = TRUE WHERE id_notificacion = $1 AND id_usuario = $2 RETURNING *`,
+    [id_notificacion, id_usuario]
+  );
+  return result.rows[0];
 };
