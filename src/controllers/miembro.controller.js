@@ -50,10 +50,7 @@ exports.getMiembroByIdOrDetalle = async (req, res) => {
                 message: 'Miembro no encontrado'
             });
         }
-        res.json({
-            success: true,
-            data: miembro
-        });
+        res.json(miembro);
     } catch (error) {
         console.error('Error al obtener miembro:', error);
         res.status(500).json({

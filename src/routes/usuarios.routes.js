@@ -7,7 +7,7 @@ const { authenticateToken, requireAdmin } = require('../middleware/auth');
 router.get('/', controller.getAllUsuarios);
 router.get('/:id', controller.getUsuarioById);
 
-// Rutas protegidas - SOLO ADMIN
+// Rutas protegidas 
 router.post('/', authenticateToken, requireAdmin, controller.createUsuario);
 router.put('/:id', authenticateToken, requireAdmin, controller.updateUsuario);
 router.delete('/:id', authenticateToken, requireAdmin, controller.deleteUsuario);
