@@ -12,6 +12,16 @@ exports.getMiembroById = async (id) => {
     return miembro;
 };
 
+exports.getMiembroByCedula = async (cedula) => {
+  const miembro = await model.findByCedula(cedula);
+  if (!miembro) {
+    const err = new Error('Miembro no encontrado');
+    err.status = 404;
+    throw err;
+  }
+  return miembro;
+};
+
 exports.createMiembro = async (miembro) => {
     return await model.create(miembro);
 };

@@ -12,6 +12,19 @@ exports.getAllMiembros = async (req, res) => {
 }
 };
 
+
+exports.getMiembroByCedula = async (req, res) => {
+  try {
+    const { cedula } = req.params;
+    const miembro = await service.getMiembroByCedula(cedula);
+    res.json(miembro);
+  } catch (err) {
+    console.error('getMiembroByCedula error:', err);
+    if (err.status === 404) return res.status(404).json({ message: 'Miembro no encontrado' });
+    res.status(500).json({ error: err.message });
+  }
+};
+
 exports.createMiembro = async (req, res) => {
     try {
         const miembro = await service.createMiembro(req.body);
