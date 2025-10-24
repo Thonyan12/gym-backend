@@ -16,6 +16,13 @@ exports.create = async (miembro) => {
     return result.rows[0];
 };
 
+exports.findByCedula = async (cedula) => {
+  const result = await db.query(
+    "SELECT * FROM miembro WHERE cedula = $1",
+    [cedula]
+  );
+  return result.rows[0];
+};
 
 // Obtener todos los miembros
 exports.findALL = async () => {
