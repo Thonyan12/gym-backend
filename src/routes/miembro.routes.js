@@ -4,6 +4,9 @@ const controller = require('../controllers/miembro.controller');
 const { authenticateToken } = require('../middleware/auth');
 
 router.get('/', controller.getAllMiembros);
+
+router.get('/cedula/:cedula', controller.getMiembroByCedula);
+
 router.get('/:id', authenticateToken, controller.getMiembroByIdOrDetalle); 
 router.post('/', controller.createMiembro);
 router.put('/:id', controller.updateMiembro);
