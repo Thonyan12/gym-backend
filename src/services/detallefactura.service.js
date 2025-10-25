@@ -1,62 +1,30 @@
-const model = require('../models/detallefactura.models');
+const db = require('../config/db');
+const detalleModel = require('../models/detallefactura.models');
+const facturaModel = require('../models/facturaAdmin.models');
 
-// Obtener todos los detalles de factura
-exports.getAllDetallesFactura = async () => {
-  return await model.findAll();
-};
-
-// Obtener detalle de factura por ID
-exports.getDetalleFacturaById = async (id) => {
-  const detalle = await model.find(Number(id));
-  if (!detalle) {
-    throw new Error(`Detalle de factura con id ${id} no encontrado`);
-  }
-  return detalle;
-};
-
-// Obtener detalles de factura por id_factura
-exports.getDetallesByFacturaId = async (id_factura) => {
-  const detalles = await model.findByFacturaId(Number(id_factura));
-  if (!detalles || detalles.length === 0) {
-    throw new Error(`No se encontraron detalles de factura con id_factura ${id_factura}`);
-  }
-  return detalles;
-};
-
-
-// Crear un nuevo detalle de factura
 exports.createDetalleFactura = async (detalle) => {
-  try {
-    const nuevoDetalle = await model.create(detalle);
-    return nuevoDetalle;
-  } catch (error) {
-    console.error('Error al crear el detalle de factura:', error);
-    throw new Error('Error al crear el detalle de factura');
+  // detalle: { id_factura, descripcion, cantidad, precio_unitario, subtotal, ... }
+  // validaciones básicas
+  if (!detalle.id_factura || !detalle.descripcion) {
+    throw new Error('Datos incompletos para detalle de factura');
   }
+  // delega al modelo
+  return await detalleModel.create(detalle);
 };
 
+const service = require('../services/detallefactura.service');
 
-exports.createFacturaConDetalle = async (facturaCompleta) => {
-  const { factura, detalles } = facturaCompleta;
-
+exports.createDetalle = async (req, res) => {
   try {
-    // Crear la factura
-    const nuevaFactura = await facturaModel.create(factura);
-
-    // Crear los detalles de factura asociados
-    const detallesCreados = [];
-    for (const detalle of detalles) {
-      detalle.id_factura = nuevaFactura.id_factura; // Asignar el id_factura generado
-      const nuevoDetalle = await detalleModel.create(detalle);
-      detallesCreados.push(nuevoDetalle);
-    }
-
-    return {
-      factura: nuevaFactura,
-      detalles: detallesCreados,
-    };
-  } catch (error) {
-    console.error('Error al crear factura con detalles:', error);
-    throw new Error('Error al crear factura con detalles');
+    console.log('POST /api/detallefactura payload:', req.body);
+    const resultado = await service.createDetalleFactura(req.body);
+    return res.status(201).json(resultado);
+  } catch (err) {
+    // mostrar stack completo en consola para depurar
+    console.error('Error POST /api/detallefactura:', err);
+    return res.status(500).json({
+      message: 'Error al crear el detalle de factura',
+      error: err.message || err.toString()
+    });
   }
 };

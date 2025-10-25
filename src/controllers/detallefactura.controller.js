@@ -1,79 +1,66 @@
 const service = require('../services/detallefactura.service');
 
-// Obtener todos los detalles de factura
 exports.getAllDetallesFactura = async (req, res) => {
   try {
     const detalles = await service.getAllDetallesFactura();
     res.json(detalles);
   } catch (error) {
-    res.status(500).json({
-      message: "Error al obtener los detalles de factura",
-      error: error.message,
-    });
+    res.status(500).json({ message: "Error al obtener los detalles de factura", error: error.message });
   }
 };
 
-// Obtener detalle de factura por ID
 exports.getDetalleFacturaById = async (req, res) => {
   try {
     const detalle = await service.getDetalleFacturaById(req.params.id);
-
-    if (!detalle) {
-      return res.status(404).json({
-        message: `Detalle de factura con id ${req.params.id} no encontrado`,
-      });
-    }
     res.json(detalle);
   } catch (error) {
-    res.status(500).json({
-      message: "Error al obtener el detalle de factura",
-      error: error.message,
-    });
+    res.status(500).json({ message: "Error al obtener el detalle de factura", error: error.message });
   }
 };
 
-// Obtener detalles de factura por id_factura
 exports.getDetallesByFacturaId = async (req, res) => {
   try {
     const detalles = await service.getDetallesByFacturaId(req.params.id_factura);
-
-    if (!detalles || detalles.length === 0) {
-      return res.status(404).json({
-        message: `No se encontraron detalles de factura con id_factura ${req.params.id_factura}`,
-      });
-    }
     res.json(detalles);
   } catch (error) {
-    res.status(500).json({
-      message: "Error al obtener los detalles de factura por id_factura",
-      error: error.message,
-    });
+    res.status(500).json({ message: "Error al obtener los detalles por id_factura", error: error.message });
   }
 };
 
-// Crear un nuevo detalle de factura
-exports.createDetalleFactura = async (req, res) => {
+
+exports.createDetalle = async (req, res) => {
   try {
-    const nuevoDetalle = await service.createDetalleFactura(req.body);
-    res.status(201).json(nuevoDetalle);
-  } catch (error) {
-    res.status(500).json({
-      message: "Error al crear el detalle de factura",
-      error: error.message,
+    console.log('POST /api/detallefactura payload:', JSON.stringify(req.body));
+    const resultado = await service.createDetalleFactura(req.body);
+    return res.status(201).json(resultado);
+  } catch (err) {
+    // imprime stack completo en consola para depuración
+    console.error('Error POST /api/detallefactura stack:', err.stack || err);
+    return res.status(500).json({
+      message: 'Error al crear el detalle de factura',
+      error: err.message || String(err)
     });
   }
 };
 
-exports.createFacturaConDetalle = async (req, res) => {
+
+exports.updateDetalle = async (req, res) => {
   try {
-    const facturaCompleta = req.body; // Recibir factura y detalles desde el cliente
-    const resultado = await service.createFacturaConDetalle(facturaCompleta);
-    res.status(201).json(resultado);
-  } catch (error) {
-    res.status(500).json({
-      message: "Error al crear factura con detalles",
-      error: error.message,
-    });
+    const id = Number(req.params.id);
+    const r = await service.updateDetalle(id, req.body);
+    res.json(r);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
   }
 };
 
+exports.deleteDetalle = async (req, res) => {
+  try {
+    await service.deleteDetalle(Number(req.params.id));
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
+};

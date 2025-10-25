@@ -1,5 +1,6 @@
 //3
 const service = require('../services/facturaAdmin.service');
+db = require('../config/db');
 
 exports.getAllFacturas = async (req, res) => {
   try {
