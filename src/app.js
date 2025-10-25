@@ -18,10 +18,9 @@ const rutinaRoutes = require('./routes/rutina.routes');
 const perfilFisicoRoutes = require('./routes/perfilFisico.routes');
 const asistenciaRoutes = require('./routes/asistencia.routes');
 const entrenadoresRoutes = require('./routes/entrenadores.routes');
-
-// MANTÉN SOLO UNA DE ESTAS DOS LÍNEAS:
 const notificacionesMiembroRoutes = require('./routes/notificacionesMiembros.routes');
 const notificacionesEntrenadorRoutes = require('./routes/notificacionesEntrenador.routes');
+const notificacionesUnificadasRoutes = require('./routes/notificaciones-unificadas.routes');
 
 const app = express();
 app.use(cors());
@@ -45,5 +44,6 @@ app.use('/api/dietas', dietasMiembroRoutes);
 app.use('/api/rutinas', rutinaRoutes);
 app.use('/api/perfil-fisico', perfilFisicoRoutes);
 app.use('/api/notificaciones-entrenador', notificacionesEntrenadorRoutes);
+app.use('/api/notificaciones-unificadas', notificacionesUnificadasRoutes);
 
 module.exports = app;
