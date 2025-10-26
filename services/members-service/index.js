@@ -17,6 +17,10 @@ app.use('/api/miembros', carritoRoutes);
 app.use('/api/asistencia', asistenciaRoutes);
 app.use('/api/perfil-fisico', perfilFisicoRoutes);
 
+// Additionally accept frontend POSTs to /api/members/register (some frontends post to this path)
+const miembroController = require('../../src/controllers/miembro.controller');
+app.post('/api/members/register', miembroController.createMiembro);
+
 app.get('/health', (_, res) => res.json({ ok: true, service: 'members-service' }));
 
 const PORT = process.env.MEMBERS_SERVICE_PORT || 3002;

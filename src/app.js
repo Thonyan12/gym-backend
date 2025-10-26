@@ -23,7 +23,40 @@ const notificacionesEntrenadorRoutes = require('./routes/notificacionesEntrenado
 const notificacionesUnificadasRoutes = require('./routes/notificaciones-unificadas.routes');
 
 const app = express();
-app.use(cors());
+// CORS: permitir orígenes configurables (env ALLOWED_ORIGINS como lista separada por comas)
+const allowedOrigins = (process.env.ALLOWED_ORIGINS && process.env.ALLOWED_ORIGINS.split(',')) || [
+	'http://localhost:4200',
+	'http://localhost:57727',
+];
+
+app.use(
+	cors({
+		origin: function (origin, callback) {
+			// permitir requests sin origin (Postman, curl, server-to-server)
+			if (!origin) return callback(null, true);
+			if (allowedOrigins.indexOf(origin) === -1) {
+				return callback(new Error('CORS origin no permitido: ' + origin), false);
+			}
+			return callback(null, true);
+		},
+		credentials: true,
+	})
+);
+
+// Habilitar preflight OPTIONS para todas las rutas con la misma policy
+app.options(
+	'*',
+	cors({
+		origin: function (origin, callback) {
+			if (!origin) return callback(null, true);
+			if (allowedOrigins.indexOf(origin) === -1) {
+				return callback(new Error('CORS origin no permitido: ' + origin), false);
+			}
+			return callback(null, true);
+		},
+		credentials: true,
+	})
+);
 app.use(express.json());
 
 app.use('/api/notificaciones-miembro', notificacionesMiembroRoutes);

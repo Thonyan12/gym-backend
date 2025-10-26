@@ -5,10 +5,20 @@ const socketService = require('./src/services/socket.service');
 
 const PORT = process.env.PORT || 3000;
 
+// Orígenes permitidos para CORS (puedes pasar ALLOWED_ORIGINS="http://a,http://b")
+const allowedOrigins = (process.env.ALLOWED_ORIGINS && process.env.ALLOWED_ORIGINS.split(',')) || [
+  'http://localhost:4200',
+  'http://localhost:57727',
+];
+
 const server = http.createServer(app);
 
 const io = new Server(server, {
-  cors: { origin: process.env.ALLOWED_ORIGIN || '*', methods: ['GET', 'POST'] }
+  cors: {
+    origin: allowedOrigins,
+    methods: ['GET', 'POST'],
+    credentials: true,
+  },
 });
 
 // Inicializar el servicio de sockets

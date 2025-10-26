@@ -27,9 +27,13 @@ exports.getMiembroByCedula = async (req, res) => {
 
 exports.createMiembro = async (req, res) => {
     try {
-        const miembro = await service.createMiembro(req.body);
-        res.status(201).json(miembro);
+        // Log para debugging: ruta y payload entrante
+        console.log('[members-service] POST', req.originalUrl || req.url, 'body:', req.body);
+    const miembro = await service.createMiembro(req.body);
+    // Normalizar respuesta para frontend: envolvemos en { success, data }
+    return res.status(201).json({ success: true, data: miembro });
     } catch (error) {
+        console.error('createMiembro error:', error);
         res.status(500).json({
             message: "Error al crear el miembro",
             error: error.message,
