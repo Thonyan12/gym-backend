@@ -9,7 +9,7 @@ router.get('/mis-notificaciones', authenticateToken, requireTrainer, controller.
 // Crear notificación
 router.post('/', authenticateToken, requireTrainer, controller.createNotification);
 
-// PATCH /api/notificaciones-entrenador/:id/leida
-router.patch('/:id/leida', authenticateToken, requireTrainer, controller.marcarNotificacionLeida);
+// PUT /api/notificaciones-entrenador/:id/leida
+router.put('/:id/leida', authenticateToken, requireTrainer, controller.marcarNotificacionLeida);
 
 module.exports = router;

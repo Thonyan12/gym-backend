@@ -1,1 +1,1 @@
-require('dotenv').config();
+module.exports = require('../../shared/dotenv');

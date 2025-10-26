@@ -1,7 +1,26 @@
 const db = require('../config/db');
 
 exports.findALL = async () => {
-    const result = await db.query("SELECT * FROM usuario");
+    const result = await db.query(`
+        SELECT 
+            u.id_usuario,
+            u.usuario,
+            u.rol,
+            u.estado,
+            u.fecha_registro,
+            u.id_coach,
+            u.id_miembro,
+            CASE 
+                WHEN u.rol = 'miembro' THEN CONCAT(m.nombre, ' ', m.apellido1, ' ', COALESCE(m.apellido2, ''))
+                WHEN u.rol = 'entrenador' THEN CONCAT(e.nombre, ' ', COALESCE(e.apellido, ''))
+                ELSE u.usuario
+            END as nombre_completo
+        FROM usuario u
+        LEFT JOIN miembro m ON u.id_miembro = m.id_miembro
+        LEFT JOIN entrenador e ON u.id_coach = e.id_entrenador
+        WHERE u.estado = TRUE
+        ORDER BY u.rol, nombre_completo
+    `);
     return result.rows;
 };
 

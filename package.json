@@ -5,7 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "node start-all.js",
+    "start:gateway": "node gateway/index.js",
+    "start:auth": "node services/auth-service/index.js",
+    "start:members": "node services/members-service/index.js",
+    "start:trainers": "node services/trainers-service/index.js",
+    "start:billing": "node services/billing-service/index.js",
+    "start:products": "node services/products-service/index.js",
+    "start:notifications": "node services/notifications-service/index.js",
+    "smoke": "node scripts/smoke-test.js"
   },
   "author": "antho",
   "license": "ISC",
@@ -20,7 +28,8 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.2",
     "socket.io": "^4.8.1",
-    "socket.io-client": "^4.8.1"
+    "socket.io-client": "^4.8.1",
+    "http-proxy-middleware": "^2.0.6"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
