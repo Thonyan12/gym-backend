@@ -161,15 +161,7 @@ Puertos de servicios (opcionales):
 - `PRODUCTS_SERVICE_PORT` (default 3005)
 - `NOTIFICATIONS_SERVICE_PORT` (default 3006)
 
-## Notas Importantes
 
-1. **Sin Docker**: Los servicios corren directamente con Node.js en tu máquina
-2. **Lógica intacta**: Todo el código en `src/` permanece sin modificar
-3. **Base de datos compartida**: Todos los servicios usan el mismo pool de PostgreSQL
-4. **CORS**: Configurado en cada servicio y en el gateway
-5. **Sin transacciones distribuidas**: Si necesitas operaciones que cruzan servicios, gestiónalas manualmente
-
-## Troubleshooting
 
 ### Puertos ocupados
 Si ves errores `EADDRINUSE`, mata los procesos:
@@ -197,12 +189,3 @@ Invoke-RestMethod http://localhost:3001/health
 Invoke-RestMethod http://localhost:3002/health
 ```
 
-## Próximos Pasos (Opcionales)
-
-- [ ] Implementar circuit breakers entre servicios
-- [ ] Añadir rate limiting por servicio
-- [ ] Implementar logging centralizado
-- [ ] Añadir métricas y monitoring
-- [ ] Separar bases de datos por servicio
-- [ ] Implementar message queue para eventos entre servicios
-- [ ] Añadir tests de integración E2E
