@@ -59,3 +59,41 @@ exports.remove = async (id) => {
     await db.query("DELETE FROM usuario WHERE id_usuario = $1", [id]);
     return { message: "Usuario eliminado" };
 };
+
+// ============================================
+// MÉTODOS PARA 2FA
+// ============================================
+
+// Buscar por email (recordar: usuario.usuario ES el email)
+exports.findByEmail = async (email) => {
+    const result = await db.query(
+        `SELECT u.*, m.nombre, m.apellido1, m.correo as correo_miembro
+         FROM usuario u
+         LEFT JOIN miembro m ON u.id_miembro = m.id_miembro
+         WHERE u.usuario = $1 AND u.estado = TRUE`,
+        [email]
+    );
+    return result.rows[0];
+};
+
+// Verificar si email existe
+exports.emailExiste = async (email) => {
+    // Verificar en miembro
+    const miembro = await db.query(
+        "SELECT id_miembro FROM miembro WHERE correo = $1",
+        [email]
+    );
+    
+    // Verificar en usuario (usuario.usuario ES el email)
+    const usuario = await db.query(
+        "SELECT id_usuario FROM usuario WHERE usuario = $1",
+        [email]
+    );
+    
+    return miembro.rows.length > 0 || usuario.rows.length > 0;
+};
+
+// Verificar contraseña (comparación directa - SIN bcrypt)
+exports.verifyPassword = async (plainPassword, storedPassword) => {
+    return plainPassword === storedPassword;
+};
