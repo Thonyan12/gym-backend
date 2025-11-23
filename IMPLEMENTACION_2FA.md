@@ -462,3 +462,16 @@ Para preguntas o problemas relacionados con esta implementación, contactar al e
 **Fecha de implementación**: Noviembre 18, 2025
 **Versión**: 1.0.0
 **Estado**: Implementado y funcional
+
+
+ENV neceario tener
+PG_HOST = localhost
+PG_PORT = 5432
+PG_USER = postgres
+PG_PASSWORD = 1812
+PG_DATABASE = gymUtmach
+JWT_SECRET=tu_clave_secreta_segura
+
+# Configuración de Email (Gmail) para 2FA
+EMAIL_USER=satoruinfinito2004@gmail.com
+EMAIL_PASSWORD=pzshjldceszkwezi
